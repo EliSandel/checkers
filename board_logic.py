@@ -32,7 +32,13 @@ class BoardLogic:
         print("checking move")
         print(source_coor)
         print(dest_coor)
-        pass
+        source_x = source_coor[0]
+        source_y = source_coor[1]
+        dest_x = dest_coor[0]
+        dest_y = dest_coor[1]
+        
+        #check if its a one square move forward with empty space
+        return "move_piece"
             
             
 if __name__ == "__main__":

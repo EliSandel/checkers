@@ -12,6 +12,7 @@ class BoardGui:
         self.buttons = []
         self.black_piece_image = tk.PhotoImage(file='images/black_piece.png')  # Keep a reference to the image
         self.red_piece_image = tk.PhotoImage(file='images/red_piece.png')
+        self.empty_image = tk.PhotoImage()
         self.source_coor = None
         self.dest_coor = None
         self.gui_setup()
@@ -26,10 +27,10 @@ class BoardGui:
             for j in range(8):
                 button = tk.Button(
                     master=board_frame, 
-                    text=f"{i}: {j}", 
-                    command= lambda i=i, j=j: self.move_piece((i,j)),
-                    width=10,
-                    height=4
+                    command= lambda i=i, j=j: self.click((i,j)),
+                    width=74,
+                    height=65,
+                    image=self.empty_image
                 )
                 if i % 2 ==0:
                     if j % 2 ==0:
@@ -57,7 +58,7 @@ class BoardGui:
         
         board_frame.grid(row=0, column=0)
         
-    def move_piece(self, coor):
+    def click(self, coor):
         if self.source_coor == None:
             self.source_coor = coor
         else:
@@ -66,7 +67,22 @@ class BoardGui:
             dest_coor = self.dest_coor
             self.source_coor = None
             self.dest_coor = None
-            self.board_logic.check_move(source_coor, dest_coor)
+            result = self.board_logic.check_move(source_coor, dest_coor)
+            if result == "move_piece":
+                self.move_piece(source_coor, dest_coor)
+            
+    
+    def move_piece(self, source_coor, dest_coor):
+        source_x = source_coor[0]
+        source_y = source_coor[1]
+        dest_x = dest_coor[0]
+        dest_y = dest_coor[1]
+        
+        image = self.buttons[source_x][source_y].cget('image')
+        self.buttons[source_x][source_y].config(image=self.empty_image)
+        self.buttons[dest_x][dest_y].config(image=image, width=74, height=65)
+        
+        
     
     def make_king(self):
         pass
