@@ -89,6 +89,9 @@ class BoardGui:
     
     def remove_piece(self):
         pass
+    
+    def illegal_move(self):
+        pass
         
         
         
