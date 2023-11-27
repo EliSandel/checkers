@@ -40,15 +40,23 @@ class BoardLogic:
         if self.board[dest_x][dest_y] != None or self.board[source_x][source_y] == None:
             return "illegal_move"
         if self.board[source_x][source_y].is_legal_move(source_coor, dest_coor):
-            self.board[dest_x][dest_y] = self.board[source_x][source_y]
-            self.board[source_x][source_y] = None
-            # print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
-            return "move_piece"
-        else:
-            return "illegal_move"
+            if abs(source_x - dest_x) == 1:
+            #basic moveing the piece
+                self.board[dest_x][dest_y] = self.board[source_x][source_y]
+                self.board[source_x][source_y] = None
+                print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
+                return "move_piece"
+            #jump move
+            if abs(source_x - dest_x) == 2:
+                if self.board[(source_x + dest_x)//2][(source_y + dest_y)//2] != None:#checks that there is something in the middle piece
+                    if self.board[(source_x + dest_x)//2][(source_y + dest_y)//2].color != self.board[source_x][source_y].color:
+                        self.board[dest_x][dest_y] = self.board[source_x][source_y]
+                        self.board[source_x][source_y] = None
+                        self.board[(source_x+dest_x)//2][(source_y+dest_y)//2] = None
+                        print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
+                        return "jump_piece"
+        return "illegal_move"
         
-        #check if its a one square move forward with empty space
-        # return "move_piece"
             
             
 if __name__ == "__main__":

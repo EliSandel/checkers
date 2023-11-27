@@ -75,7 +75,9 @@ class BoardGui:
                 self.move_piece(source_coor, dest_coor)
             elif result == "illegal_move":
                 self.illegal_move()
-            
+            elif result == "jump_piece":
+                self.delete_piece(source_coor, dest_coor)
+                self.move_piece(source_coor, dest_coor)
     
     def move_piece(self, source_coor, dest_coor):
         source_x = source_coor[0]
@@ -87,7 +89,14 @@ class BoardGui:
         self.buttons[source_x][source_y].config(image=self.empty_image)
         self.buttons[dest_x][dest_y].config(image=image, width=74, height=65)
         
+    def delete_piece(self, source_coor, dest_coor):
+        print("delete piece")
+        # Calculate the coordinates of the jumped-over piece
+        jumped_x = (source_coor[0] + dest_coor[0]) // 2
+        jumped_y = (source_coor[1] + dest_coor[1]) // 2
         
+        # Set the image of the jumped-over piece to the empty image
+        self.buttons[jumped_x][jumped_y].config(image=self.empty_image)
     
     def make_king(self):
         pass
