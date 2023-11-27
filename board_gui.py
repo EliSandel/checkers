@@ -34,7 +34,7 @@ class BoardGui:
                 )
                 if i % 2 ==0:
                     if j % 2 ==0:
-                        button.config(bg=self.LIGHT_SQUARES_COLOR)
+                        button.config(bg=self.LIGHT_SQUARES_COLOR, state="disabled")
                     else:
                         button.config(bg=self.DARK_SQUARES_COLOR)
                         if i == 0 or i == 2:
@@ -50,7 +50,7 @@ class BoardGui:
                             button.config(image=self.red_piece_image, width=74, height=65)
 
                     else:
-                        button.config(bg=self.LIGHT_SQUARES_COLOR)
+                        button.config(bg=self.LIGHT_SQUARES_COLOR, state="disabled")
                 row.append(button)
                 button.grid(row=i, column=j)
             
@@ -70,6 +70,8 @@ class BoardGui:
             result = self.board_logic.check_move(source_coor, dest_coor)
             if result == "move_piece":
                 self.move_piece(source_coor, dest_coor)
+            elif result == "illegal_move":
+                self.illegal_move()
             
     
     def move_piece(self, source_coor, dest_coor):
@@ -91,6 +93,9 @@ class BoardGui:
         pass
     
     def illegal_move(self):
+        print("illegal move")
+    
+    def game_over(self):
         pass
         
         

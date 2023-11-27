@@ -30,15 +30,25 @@ class BoardLogic:
     
     def check_move(self, source_coor, dest_coor):
         print("checking move")
-        print(source_coor)
-        print(dest_coor)
+
         source_x = source_coor[0]
         source_y = source_coor[1]
         dest_x = dest_coor[0]
         dest_y = dest_coor[1]
         
+        #check if the destination square is taken or if source squar is empty so its illegal move
+        if self.board[dest_x][dest_y] != None or self.board[source_x][source_y] == None:
+            return "illegal_move"
+        if self.board[source_x][source_y].is_legal_move(source_coor, dest_coor):
+            self.board[dest_x][dest_y] = self.board[source_x][source_y]
+            self.board[source_x][source_y] = None
+            # print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
+            return "move_piece"
+        else:
+            return "illegal_move"
+        
         #check if its a one square move forward with empty space
-        return "move_piece"
+        # return "move_piece"
             
             
 if __name__ == "__main__":
