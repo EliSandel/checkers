@@ -60,7 +60,10 @@ class BoardGui:
         
     def click(self, coor):
         if self.source_coor == None:
-            self.source_coor = coor
+            if self.buttons[coor[0]][coor[1]].cget('image') == str(self.empty_image):
+                return
+            else:
+                self.source_coor = coor
         else:
             self.dest_coor = coor
             source_coor = self.source_coor
