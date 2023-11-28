@@ -42,21 +42,31 @@ class BoardLogic:
         if self.board[source_x][source_y].is_legal_move(source_coor, dest_coor):
             if abs(source_x - dest_x) == 1:
             #basic moveing the piece
-                self.board[dest_x][dest_y] = self.board[source_x][source_y]
-                self.board[source_x][source_y] = None
-                print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
-                return "move_piece"
+                return self.move_piece(source_coor, dest_coor)
             #jump move
             if abs(source_x - dest_x) == 2:
-                if self.board[(source_x + dest_x)//2][(source_y + dest_y)//2] != None:#checks that there is something in the middle piece
-                    if self.board[(source_x + dest_x)//2][(source_y + dest_y)//2].color != self.board[source_x][source_y].color:
-                        self.board[dest_x][dest_y] = self.board[source_x][source_y]
-                        self.board[source_x][source_y] = None
-                        self.board[(source_x+dest_x)//2][(source_y+dest_y)//2] = None
-                        print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
-                        return "jump_piece"
+                return self.jump_piece(source_coor, dest_coor)
         return "illegal_move"
-        
+    
+    def move_piece(self, source_coor, dest_coor):
+        print("moving piece")
+        self.board[dest_coor[0]][dest_coor[1]] = self.board[source_coor[0]][source_coor[1]]
+        self.board[source_coor[0]][source_coor[1]] = None
+        print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
+        return "move_piece"
+    
+    
+    def jump_piece(self, source_coor, dest_coor):
+        if self.board[(source_coor[0] + dest_coor[0])//2][(source_coor[1] + dest_coor[1])//2] != None:#checks that there is something in the middle piece
+            if self.board[(source_coor[0] + dest_coor[0])//2][(source_coor[1] + dest_coor[1])//2].color != self.board[source_coor[0]][source_coor[1]].color:
+                self.board[dest_coor[0]][dest_coor[1]] = self.board[source_coor[0]][source_coor[1]]
+                self.board[(source_coor[0]+dest_coor[0])//2][(source_coor[1]+dest_coor[1])//2] = None
+                self.board[source_coor[0]][source_coor[1]] = None#removes the piece
+                print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
+                return "jump_piece"
+    
+    def make_king(self, coor):
+        pass
             
             
 if __name__ == "__main__":
