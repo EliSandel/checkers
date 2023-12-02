@@ -2,6 +2,7 @@ import soldier
 class BoardLogic:
     def __init__(self) -> None:
         self.board = []
+        self.turn = "red"
         self.initialize_board()
     
     def initialize_board(self):
@@ -36,15 +37,21 @@ class BoardLogic:
         dest_x = dest_coor[0]
         dest_y = dest_coor[1]
         
+        #check if the first button pressed is the current players
+        if self.board[source_x][source_y].color != self.turn:
+            return "illegal_move"
+        
         #check if the destination square is taken or if source squar is empty so its illegal move
         if self.board[dest_x][dest_y] != None or self.board[source_x][source_y] == None:
             return "illegal_move"
         if self.board[source_x][source_y].is_legal_move(source_coor, dest_coor):
             if abs(source_x - dest_x) == 1:
             #basic moveing the piece
+                self.change_turn()
                 return self.move_piece(source_coor, dest_coor)
             #jump move
             if abs(source_x - dest_x) == 2:
+                self.change_turn()
                 return self.jump_piece(source_coor, dest_coor)
         return "illegal_move"
     
@@ -66,6 +73,15 @@ class BoardLogic:
                 return "jump_piece"
     
     def make_king(self, coor):
+        pass
+    
+    def change_turn(self):
+        if self.turn == "red":
+            self.turn = "black"
+        elif self.turn == "black":
+            self.turn = "red"
+    
+    def check_for_second_move():
         pass
             
             
