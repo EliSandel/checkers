@@ -9,6 +9,7 @@ class BoardLogic:
         self.current_possible_moves = []
         self.initialize_board()
     
+    #setting up the list of buttons
     def initialize_board(self):
         for i in range(8):
             row = []
@@ -33,8 +34,9 @@ class BoardLogic:
                 row.append(piece)
             self.board.append(row)
     
+    #called from gui when the player clicks buttons
     def check_move(self, source_coor, dest_coor):
-        print("checking move")
+        print("checking move in board_logic")
 
         source_x = source_coor[0]
         source_y = source_coor[1]
@@ -43,12 +45,14 @@ class BoardLogic:
         
         #check if the first button pressed is the current players
         if self.board[source_x][source_y].color != self.turn:
+            print("in board_logic wrong players move")
             return "illegal_move"
         
         #check if the destination square is taken or if source squar is empty so its illegal move
         if self.board[dest_x][dest_y] != None or self.board[source_x][source_y] == None:
             return "illegal_move"
         if self.board[source_x][source_y].is_legal_move(source_coor, dest_coor):
+            print("legal move in if")
             if abs(source_x - dest_x) == 1:
             #basic moveing the piece
                 self.change_turn()
@@ -57,16 +61,18 @@ class BoardLogic:
             if abs(source_x - dest_x) == 2:
                 self.change_turn()
                 return self.jump_piece(source_coor, dest_coor)
+        print("no other options")
         return "illegal_move"
     
     def move_piece(self, source_coor, dest_coor):
-        print("moving piece")
+        print(f"moving {type(self.board[source_coor[0]][source_coor[1]])} piece from {source_coor} to {dest_coor}")
         self.board[dest_coor[0]][dest_coor[1]] = self.board[source_coor[0]][source_coor[1]]
         self.board[source_coor[0]][source_coor[1]] = None
         #check to see if piece reached the edge and is a soldier and then make king
         if dest_coor[0] == 0 or dest_coor[0] == 7:
             if isinstance(self.board[dest_coor[0]][dest_coor[1]], soldier.Soldier):
                 color = self.make_king(dest_coor)
+                print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
                 return f"move_piece_and_make_king_{color}"
         print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
         return "move_piece"
@@ -82,14 +88,16 @@ class BoardLogic:
                 if dest_coor[0] == 0 or dest_coor[0] == 7:
                     if isinstance(self.board[dest_coor[0]][dest_coor[1]], soldier.Soldier):
                         color = self.make_king(dest_coor)
+                        print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
                         return f"jump_piece_and_make_king_{color}"
                 print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
                 return "jump_piece"
     
+    
     def make_king(self, coor):
         print("make king")
         color = self.board[coor[0]][coor[1]].color
-        self.board[coor[0]][coor[1]] = king.King("color")
+        self.board[coor[0]][coor[1]] = king.King(f"{color}")
         return color
         
     
@@ -98,6 +106,7 @@ class BoardLogic:
             self.turn = "black"
         elif self.turn == "black":
             self.turn = "red"
+    
     
     def check_for_second_move():
         pass

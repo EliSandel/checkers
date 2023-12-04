@@ -72,6 +72,7 @@ class BoardGui:
             dest_coor = self.dest_coor
             self.source_coor = None
             self.dest_coor = None
+            
             #send move to backend
             result = self.board_logic.check_move(source_coor, dest_coor)
             if result == "move_piece":
@@ -100,6 +101,7 @@ class BoardGui:
         self.buttons[source_x][source_y].config(image=self.empty_image)
         self.buttons[dest_x][dest_y].config(image=image, width=74, height=65)
         
+        
     def delete_piece(self, source_coor, dest_coor):
         print("delete piece")
         # Calculate the coordinates of the jumped-over piece
@@ -119,11 +121,6 @@ class BoardGui:
             color = "black"
         # self.buttons[dest_coor[0]][dest_coor[1]].config(image=f"{self.{color}_king_image}")
         self.buttons[dest_coor[0]][dest_coor[1]].config(image=getattr(self, f"{color}_king_image"))
-
-        
-    
-    def remove_piece(self):
-        pass
     
     
     def illegal_move(self):
