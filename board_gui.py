@@ -1,8 +1,8 @@
 import tkinter as tk
 
 class BoardGui:
-    LIGHT_SQUARES_COLOR = "#b1e8b9"  # Hexadecimal color code for (177, 228, 185)
-    DARK_SQUARES_COLOR = "#70a2a3"   # Hexadecimal color code for (112, 162, 163)
+    LIGHT_SQUARES_COLOR = "#b1e8b9" 
+    DARK_SQUARES_COLOR = "#70a2a3"   
     
     def __init__(self, board_logic):#board_logic
         self.board_logic = board_logic
@@ -12,6 +12,8 @@ class BoardGui:
         self.buttons = []
         self.black_piece_image = tk.PhotoImage(file='images/black_piece.png')  # Keep a reference to the image
         self.red_piece_image = tk.PhotoImage(file='images/red_piece.png')
+        self.black_king_image = tk.PhotoImage(file="images/black_king.png")
+        self.red_king_image = tk.PhotoImage(file="images/red_king.png")
         self.empty_image = tk.PhotoImage()
         self.source_coor = None
         self.dest_coor = None
@@ -70,6 +72,7 @@ class BoardGui:
             dest_coor = self.dest_coor
             self.source_coor = None
             self.dest_coor = None
+            #send move to backend
             result = self.board_logic.check_move(source_coor, dest_coor)
             if result == "move_piece":
                 self.move_piece(source_coor, dest_coor)
@@ -78,7 +81,15 @@ class BoardGui:
             elif result == "jump_piece":
                 self.delete_piece(source_coor, dest_coor)
                 self.move_piece(source_coor, dest_coor)
-    
+            elif result[:24] == "move_piece_and_make_king":
+                print(f"got result in gui {result}")
+                self.move_piece(source_coor, dest_coor)
+                self.make_king(dest_coor, result)
+            elif result[:24] == "jump_piece_and_make_king":
+                self.delete_piece(source_coor, dest_coor)
+                self.move_piece(source_coor, dest_coor)
+                self.make_king(dest_coor, result)
+                
     def move_piece(self, source_coor, dest_coor):
         source_x = source_coor[0]
         source_y = source_coor[1]
@@ -98,14 +109,26 @@ class BoardGui:
         # Set the image of the jumped-over piece to the empty image
         self.buttons[jumped_x][jumped_y].config(image=self.empty_image)
     
-    def make_king(self):
-        pass
+    
+    def make_king(self, dest_coor, result):
+        print("making king in gui")
+        print(f"result: {result}")
+        if result[-3:] == "red":
+            color = "red"
+        elif result[-5:] == "black":
+            color = "black"
+        # self.buttons[dest_coor[0]][dest_coor[1]].config(image=f"{self.{color}_king_image}")
+        self.buttons[dest_coor[0]][dest_coor[1]].config(image=getattr(self, f"{color}_king_image"))
+
+        
     
     def remove_piece(self):
         pass
     
+    
     def illegal_move(self):
         print("illegal move")
+    
     
     def game_over(self):
         pass

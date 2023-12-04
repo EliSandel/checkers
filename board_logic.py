@@ -1,8 +1,12 @@
 import soldier
+import king
+
+
 class BoardLogic:
     def __init__(self) -> None:
         self.board = []
         self.turn = "red"
+        self.current_possible_moves = []
         self.initialize_board()
     
     def initialize_board(self):
@@ -59,6 +63,11 @@ class BoardLogic:
         print("moving piece")
         self.board[dest_coor[0]][dest_coor[1]] = self.board[source_coor[0]][source_coor[1]]
         self.board[source_coor[0]][source_coor[1]] = None
+        #check to see if piece reached the edge and is a soldier and then make king
+        if dest_coor[0] == 0 or dest_coor[0] == 7:
+            if isinstance(self.board[dest_coor[0]][dest_coor[1]], soldier.Soldier):
+                color = self.make_king(dest_coor)
+                return f"move_piece_and_make_king_{color}"
         print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
         return "move_piece"
     
@@ -69,11 +78,20 @@ class BoardLogic:
                 self.board[dest_coor[0]][dest_coor[1]] = self.board[source_coor[0]][source_coor[1]]
                 self.board[(source_coor[0]+dest_coor[0])//2][(source_coor[1]+dest_coor[1])//2] = None
                 self.board[source_coor[0]][source_coor[1]] = None#removes the piece
+                #check to see if piece reached the edge and is a soldier and then make king
+                if dest_coor[0] == 0 or dest_coor[0] == 7:
+                    if isinstance(self.board[dest_coor[0]][dest_coor[1]], soldier.Soldier):
+                        color = self.make_king(dest_coor)
+                        return f"jump_piece_and_make_king_{color}"
                 print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.board]))
                 return "jump_piece"
     
     def make_king(self, coor):
-        pass
+        print("make king")
+        color = self.board[coor[0]][coor[1]].color
+        self.board[coor[0]][coor[1]] = king.King("color")
+        return color
+        
     
     def change_turn(self):
         if self.turn == "red":

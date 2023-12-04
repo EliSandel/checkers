@@ -4,17 +4,6 @@ class Soldier:
     
     def is_legal_move(self, source_coor, dest_coor) -> bool:
         print("checking is legal move in soldier")
-        # if self.color == "red":
-        #     if source_coor[0] <= dest_coor[0]:
-        #         return False
-        #     print("red")
-        #     pass
-        # elif self.color == "black":
-        #     if source_coor[0] >= dest_coor[0]:
-        #         return False
-        #     print("black")
-        #     pass
-        
         if self.color == "red":
             if source_coor[0] > dest_coor[0]:#going up
                 if source_coor[0] - dest_coor[0] == 1:#if its a regular move
@@ -32,3 +21,4 @@ class Soldier:
                     if abs(source_coor[1] - dest_coor[1]) == 2:
                         return True
         return False
+    
