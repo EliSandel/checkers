@@ -93,12 +93,12 @@ class BoardGui:
             elif result.startswith("game_over"):
                 self.delete_piece(source_coor, dest_coor)
                 self.move_piece(source_coor, dest_coor)
-                if result.endswith("red"):
-                    winner = "red"
-                elif result.endswith("black"):
-                    winner  = "black"
+                # if result.endswith("red"):
+                #     winner = "red"
+                # elif result.endswith("black"):
+                #     winner  = "black"
                 self.window.destroy()
-                return winner
+                # return winner
                 
     def move_piece(self, source_coor, dest_coor):
         source_x = source_coor[0]

@@ -10,6 +10,7 @@ class BoardLogic:
         self.current_possible_moves = []
         self.red_players_eaten = 0
         self.black_players_eaten = 0
+        self.winner = ""
         self.initialize_board()
     
     #setting up the list of buttons
@@ -110,8 +111,9 @@ class BoardLogic:
                 self.board[source_coor[0]][source_coor[1]] = None#removes the piece
                 
                 #check for game over
-                if current_value + 1 == 12:
+                if current_value + 1 == 3:
                     print(f"game over {current_color} wins:     {eaten_color} loses")
+                    self.winner = current_color
                     return f"game_over_{current_color}"
                 
                 #check to see if piece reached the edge and is a soldier and then make king
