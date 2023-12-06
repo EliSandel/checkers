@@ -60,13 +60,13 @@ class BoardGui:
         
         board_frame.grid(row=0, column=0)
         
-    def click(self, coor):
-        if self.source_coor == None:
-            if self.buttons[coor[0]][coor[1]].cget('image') == str(self.empty_image):
+    def click(self, coor):#is called when a button is clicked
+        if self.source_coor == None:#will send the move to backend only when two buttons were pressed 
+            if self.buttons[coor[0]][coor[1]].cget('image') == str(self.empty_image):#if the first button pressed is an empty image -> ignore it
                 return
             else:
-                self.source_coor = coor
-        else:
+                self.source_coor = coor #set the first button
+        else:#if there is a first button already, set the second button and send to backend
             self.dest_coor = coor
             source_coor = self.source_coor
             dest_coor = self.dest_coor
@@ -93,12 +93,7 @@ class BoardGui:
             elif result.startswith("game_over"):
                 self.delete_piece(source_coor, dest_coor)
                 self.move_piece(source_coor, dest_coor)
-                # if result.endswith("red"):
-                #     winner = "red"
-                # elif result.endswith("black"):
-                #     winner  = "black"
                 self.window.destroy()
-                # return winner
                 
     def move_piece(self, source_coor, dest_coor):
         source_x = source_coor[0]
@@ -128,19 +123,9 @@ class BoardGui:
             color = "red"
         elif result[-5:] == "black":
             color = "black"
-        # self.buttons[dest_coor[0]][dest_coor[1]].config(image=f"{self.{color}_king_image}")
         self.buttons[dest_coor[0]][dest_coor[1]].config(image=getattr(self, f"{color}_king_image"))
     
     
     def illegal_move(self):
         print("illegal move")
     
-    
-    def game_over(self):
-        pass
-        
-        
-        
-if __name__ == "__main__":
-    board_gui = BoardGui()
-    board_gui.window.mainloop()

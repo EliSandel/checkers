@@ -47,13 +47,13 @@ class BoardLogic:
         dest_x = dest_coor[0]
         dest_y = dest_coor[1]
         
-        #check if in case of a double move that the move is a chain jump
+        #check if in case of a double move that the move is one of the legal jump moves
         if self.is_there_another_move:
             flag = False
             for move in self.current_possible_moves:
                 if move[0] == dest_x and move[1] == dest_y:
                     flag = True
-            if not flag:
+            if not flag:#the move that he pressed is not one of the available moves
                 print("illegal chain move")
                 return "illegal_move"
             else:
@@ -73,7 +73,7 @@ class BoardLogic:
         if self.board[source_x][source_y].is_legal_move(source_coor, dest_coor):
             print("legal move in if")
             if abs(source_x - dest_x) == 1:
-            #basic moveing the piece
+            #basic moving the piece
                 self.change_turn()
                 return self.move_piece(source_coor, dest_coor)
             #jump move
@@ -111,7 +111,7 @@ class BoardLogic:
                 self.board[source_coor[0]][source_coor[1]] = None#removes the piece
                 
                 #check for game over
-                if current_value + 1 == 3:
+                if current_value + 1 == 12:
                     print(f"game over {current_color} wins:     {eaten_color} loses")
                     self.winner = current_color
                     return f"game_over_{current_color}"
@@ -145,7 +145,7 @@ class BoardLogic:
             self.turn = "red"
     
     
-    def check_for_second_move(self, coor) -> (bool, str):
+    def check_for_second_move(self, coor) -> (bool, str):#check if from the landing location there is another direct jump move available in any direction
         button = self.board[coor[0]][coor[1]]
         possible_moves = []
         reply = False
@@ -155,7 +155,6 @@ class BoardLogic:
                 if self.board[coor[0] -1][coor[1] + 1].color != button.color:#check if the next square is the other players
                     reply = True
                     possible_moves.append((coor[0] - 2, coor[1] + 2))
-                    # return (True, "hello", (coor[0] -1, coor[1] + 1))
         except:
             pass
         
@@ -163,7 +162,6 @@ class BoardLogic:
         try:
             if self.board[coor[0] - 2][coor[1] - 2] == None:#check if two squares ahead is empty
                 if self.board[coor[0] -1][coor[1] - 1].color != button.color:#check if the next square is the other players
-                    # return (True, "hello", (coor[0] -1, coor[1] - 1))
                     reply = True
                     possible_moves.append((coor[0] - 2, coor[1] - 2))
         except:
@@ -173,7 +171,6 @@ class BoardLogic:
         try:
             if self.board[coor[0] + 2][coor[1] + 2] == None:#check if two squares ahead is empty
                 if self.board[coor[0] + 1][coor[1] + 1].color != button.color:#check if the next square is the other players
-                    # return (True, "hello", (coor[0] + 1, coor[1] + 1))
                     reply = True
                     possible_moves.append((coor[0] + 2, coor[1] + 2))
         except:
@@ -183,18 +180,10 @@ class BoardLogic:
         try:
             if self.board[coor[0] + 2][coor[1] - 2] == None:#check if two squares ahead is empty
                 if self.board[coor[0] + 1][coor[1] - 1].color != button.color:#check if the next square is the other players
-                    # return (True, "hello", (coor[0] +1, coor[1] -1))
                     reply = True
                     possible_moves.append((coor[0] + 2, coor[1] - 2))
         except:
             pass
         
         return reply, "hello", possible_moves
-        
-        
-            
-            
-if __name__ == "__main__":
-    b = BoardLogic()
-    print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in b.board]))
-                
+    
